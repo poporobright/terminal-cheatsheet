@@ -2,7 +2,7 @@
   {
     "id": 1787178346591,
     "cmd": "nano",
-    "desc": "The **`nano`** command opens a lightweight, beginner-friendly text editor directly inside your terminal window. It allows you to quickly create, view, or modify code and configuration files without launching a separate graphical application."
+    "desc": "The nano command opens a lightweight, beginner-friendly text editor directly inside your terminal window. It allows you to quickly create, view, or modify code and configuration files without launching a separate graphical application."
   },
   {
     "id": 1787178318450,
