@@ -262,18 +262,12 @@
   }
 
   async function fetchCommands() {
-    // Defaults to poporobright so public visitors automatically see your commands
     const user = localStorage.getItem('gh_user') || 'poporobright';
     const repo = localStorage.getItem('gh_repo') || 'terminal-cheatsheet';
 
     try {
-      // Added cache-busting headers and time params to guarantee fresh data for all users
-      const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/commands.json?v=${Date.now()}`, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
+      // Clean request without custom headers prevents browser CORS blocking
+      const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/commands.json?t=${Date.now()}`);
       
       if (!response.ok) throw new Error("Could not find commands.json");
       
