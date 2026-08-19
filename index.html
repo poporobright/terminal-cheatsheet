@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Cheatsheet</title>
+  <style>
+    :root {
+      --bg-color: #0f1419;
+      --card-bg: #151d28;
+      --card-border: #233044;
+      --text-main: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #3fb950;
+      --code-bg: #0b0e14;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container { width: 100%; max-width: 800px; }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1rem;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.8rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+
+    p { margin: 0; color: var(--text-muted); }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      max-width: 300px;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+
+    input:focus { outline: 1px solid var(--accent); }
+
+    .command-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .command-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      gap: 1rem;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      color: #58a6ff;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+
+    .description {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .btn-action {
+      background: transparent;
+      color: #58a6ff;
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-action:hover {
+      background: rgba(88, 166, 255, 0.1);
+      border-color: #58a6ff;
+    }
+
+    .empty-state { text-align: center; color: var(--text-muted); padding: 2rem; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>~/bash_cheatsheet</h1>
+    <p>Cloud-Synced Terminal Command Repository</p>
+  </header>
+
+  <div class="controls">
+    <input type="text" id="search-input" placeholder="Search commands or notes...">
+  </div>
+
+  <div id="command-list">
+    <div class="empty-state">Loading commands from GitHub...</div>
+  </div>
+</div>
+
+<script>
+  let commands = [];
+  const listContainer = document.getElementById('command-list');
+  const searchInput = document.getElementById('search-input');
+
+  async function fetchCommands() {
+    try {
+      const response = await fetch(`commands.json?v=${Date.now()}`);
+      if (!response.ok) throw new Error("Could not load commands.json");
+      commands = await response.json();
+      renderCommands();
+    } catch (err) {
+      listContainer.innerHTML = `<div class="empty-state" style="color: #f85149;">Error loading commands.json file.</div>`;
+    }
+  }
+
+  function renderCommands(filter = '') {
+    listContainer.innerHTML = '';
+    
+    const filtered = commands.filter(item => 
+      item.cmd.toLowerCase().includes(filter.toLowerCase()) || 
+      item.desc.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      listContainer.innerHTML = `<div class="empty-state">No matching commands found.</div>`;
+      return;
+    }
+
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'command-card';
+      card.innerHTML = `
+        <div class="command-header">
+          <code>${escapeHtml(item.cmd)}</code>
+          <button class="btn-action" onclick="copyCommand('${escapeAttribute(item.cmd)}', this)">Copy</button>
+        </div>
+        <div class="description">${escapeHtml(item.desc)}</div>
+      `;
+      listContainer.appendChild(card);
+    });
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function escapeAttribute(text) {
+    return text.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+  }
+
+  function copyCommand(text, buttonEl) {
+    navigator.clipboard.writeText(text).then(() => {
+      buttonEl.textContent = 'Copied!';
+      buttonEl.style.borderColor = '#3fb950';
+      buttonEl.style.color = '#3fb950';
+
+      setTimeout(() => {
+        buttonEl.textContent = 'Copy';
+        buttonEl.style.borderColor = '';
+        buttonEl.style.color = '';
+      }, 1500);
+    });
+  }
+
+  searchInput.addEventListener('input', (e) => renderCommands(e.target.value));
+  fetchCommands();
+</script>
+
+</body>
+</html>
