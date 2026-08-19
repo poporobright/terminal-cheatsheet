@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787180211295,
+    "cmd": "ls",
+    "desc": "This command lists the current directory content in its current location, unless a path is specified in the command."
+  },
+  {
     "id": 1787178346591,
     "cmd": "nano",
     "desc": "The nano command opens a lightweight, beginner-friendly text editor directly inside your terminal window. It allows you to quickly create, view, or modify code and configuration files without launching a separate graphical application."
