@@ -1,7 +1,1 @@
-[
-  {
-    "id": 3,
-    "cmd": "security authorizationdb read system.preferences.dateandtime.changetimezone",
-    "desc": "Inspect the security database right for changing the timezone on macOS."
-  }
-]
+[]
