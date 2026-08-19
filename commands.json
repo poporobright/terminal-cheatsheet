@@ -1,13 +1,16 @@
 [
   {
+    "id": 1,
     "cmd": "defaults read /Library/Preferences/com.apple.timezone.auto",
     "desc": "Check if automatic time zone selection is currently enabled (1) or disabled (0)."
   },
   {
+    "id": 2,
     "cmd": "open /System/Library/CoreServices/",
     "desc": "Open the hidden macOS system directory where built-in core apps like Finder live."
   },
   {
+    "id": 3,
     "cmd": "security authorizationdb read system.preferences.dateandtime.changetimezone",
     "desc": "Inspect the security database right for changing the timezone on macOS."
   }

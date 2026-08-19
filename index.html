@@ -12,6 +12,8 @@
       --text-main: #e6edf3;
       --text-muted: #8b949e;
       --accent: #3fb950;
+      --accent-hover: #2ea043;
+      --danger: #f85149;
       --code-bg: #0b0e14;
       --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     }
@@ -43,16 +45,27 @@
 
     p { margin: 0; color: var(--text-muted); }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    input {
+    .form-group { margin-bottom: 1rem; }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    input, textarea {
       width: 100%;
-      max-width: 300px;
       background: var(--code-bg);
       border: 1px solid var(--card-border);
       color: var(--text-main);
@@ -62,7 +75,48 @@
       box-sizing: border-box;
     }
 
-    input:focus { outline: 1px solid var(--accent); }
+    input:focus, textarea:focus { outline: 1px solid var(--accent); }
+    input.code-input { font-family: var(--font-mono); color: var(--accent); }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--accent-hover); }
+
+    .btn-action {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-action:hover { color: var(--text-main); border-color: var(--text-muted); }
+
+    .btn-danger { color: var(--danger); border-color: var(--danger); }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+
+    .btn-copy { color: #58a6ff; border-color: rgba(88, 166, 255, 0.3); }
+    .btn-copy:hover { background: rgba(88, 166, 255, 0.1); border-color: #58a6ff; }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
 
     .command-card {
       background: var(--card-bg);
@@ -97,23 +151,14 @@
       white-space: pre-wrap;
     }
 
-    .btn-action {
-      background: transparent;
-      color: #58a6ff;
-      border: 1px solid rgba(88, 166, 255, 0.3);
-      padding: 0.3rem 0.6rem;
-      font-size: 0.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .btn-action:hover {
-      background: rgba(88, 166, 255, 0.1);
-      border-color: #58a6ff;
-    }
-
     .empty-state { text-align: center; color: var(--text-muted); padding: 2rem; }
+    
+    .config-section {
+      font-size: 0.8rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1rem;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
@@ -124,28 +169,154 @@
     <p>Cloud-Synced Terminal Command Repository</p>
   </header>
 
+  <!-- Input Form -->
+  <div class="card">
+    <h3 id="form-title" style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem;">Add New Command</h3>
+    <form id="cmd-form">
+      <input type="hidden" id="edit-id">
+      
+      <div class="form-group">
+        <label for="cmd-input">Command / Script</label>
+        <input type="text" id="cmd-input" class="code-input" placeholder="e.g., defaults read com.apple.finder" required>
+      </div>
+
+      <div class="form-group">
+        <label for="desc-input">Description / Notes</label>
+        <textarea id="desc-input" rows="2" placeholder="What does this command do?" required></textarea>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button type="submit" id="submit-btn" class="btn">Save Command</button>
+        <button type="button" id="cancel-btn" class="btn-action" style="display: none;">Cancel</button>
+        <span id="status-msg" style="font-size: 0.85rem; color: var(--accent);"></span>
+      </div>
+    </form>
+  </div>
+
   <div class="controls">
-    <input type="text" id="search-input" placeholder="Search commands or notes...">
+    <input type="text" id="search-input" placeholder="Search commands or notes..." style="max-width: 300px;">
   </div>
 
   <div id="command-list">
-    <div class="empty-state">Loading commands from GitHub...</div>
+    <div class="empty-state">Loading commands...</div>
+  </div>
+
+  <!-- API Settings Drawer -->
+  <div class="config-section">
+    <details>
+      <summary style="cursor: pointer; color: var(--text-muted);">⚙️ Sync Settings (Click to configure token)</summary>
+      <div style="margin-top: 1rem;">
+        <div class="form-group">
+          <label>GitHub Username</label>
+          <input type="text" id="gh-user" placeholder="your-github-username">
+        </div>
+        <div class="form-group">
+          <label>Repository Name</label>
+          <input type="text" id="gh-repo" value="terminal-cheatsheet">
+        </div>
+        <div class="form-group">
+          <label>Personal Access Token (classic)</label>
+          <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+        </div>
+        <button class="btn" onclick="saveSettings()">Save Sync Settings</button>
+      </div>
+    </details>
   </div>
 </div>
 
 <script>
   let commands = [];
+  let fileSha = '';
+
+  const form = document.getElementById('cmd-form');
+  const cmdInput = document.getElementById('cmd-input');
+  const descInput = document.getElementById('desc-input');
+  const editIdInput = document.getElementById('edit-id');
+  const submitBtn = document.getElementById('submit-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+  const statusMsg = document.getElementById('status-msg');
   const listContainer = document.getElementById('command-list');
   const searchInput = document.getElementById('search-input');
 
+  document.getElementById('gh-user').value = localStorage.getItem('gh_user') || '';
+  document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || 'terminal-cheatsheet';
+  document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+
+  function saveSettings() {
+    localStorage.setItem('gh_user', document.getElementById('gh-user').value.trim());
+    localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
+    localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
+    alert('Settings saved! Fetching database...');
+    fetchCommands();
+  }
+
   async function fetchCommands() {
+    const user = localStorage.getItem('gh_user');
+    const repo = localStorage.getItem('gh_repo') || 'terminal-cheatsheet';
+    
+    if (!user) {
+      listContainer.innerHTML = `<div class="empty-state">Please configure your GitHub Username in ⚙️ Sync Settings below.</div>`;
+      return;
+    }
+
     try {
-      const response = await fetch(`commands.json?v=${Date.now()}`);
-      if (!response.ok) throw new Error("Could not load commands.json");
-      commands = await response.json();
+      const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/commands.json?v=${Date.now()}`);
+      if (!response.ok) throw new Error("Could not find commands.json");
+      
+      const data = await response.json();
+      fileSha = data.sha;
+      
+      const content = decodeURIComponent(escape(atob(data.content)));
+      commands = JSON.parse(content);
       renderCommands();
     } catch (err) {
-      listContainer.innerHTML = `<div class="empty-state" style="color: #f85149;">Error loading commands.json file.</div>`;
+      listContainer.innerHTML = `<div class="empty-state" style="color: var(--danger);">Error: ${err.message}. Check your Sync Settings below.</div>`;
+    }
+  }
+
+  async function syncToGitHub(newCommands, commitMessage) {
+    const user = localStorage.getItem('gh_user');
+    const repo = localStorage.getItem('gh_repo');
+    const token = localStorage.getItem('gh_token');
+
+    if (!token) {
+      alert("Please add your GitHub Personal Access Token under ⚙️ Sync Settings to allow writing changes.");
+      return false;
+    }
+
+    statusMsg.textContent = "Syncing to cloud...";
+    submitBtn.disabled = true;
+
+    const jsonString = JSON.stringify(newCommands, null, 2);
+    const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
+
+    try {
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/commands.json`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: commitMessage,
+          content: contentEncoded,
+          sha: fileSha
+        })
+      });
+
+      if (!res.ok) throw new Error("API write failed. Check token permissions.");
+      
+      const resData = await res.json();
+      fileSha = resData.content.sha;
+      statusMsg.textContent = "Saved to cloud!";
+      setTimeout(() => statusMsg.textContent = "", 3000);
+      return true;
+    } catch (err) {
+      alert("Error saving: " + err.message);
+      statusMsg.textContent = "";
+      return false;
+    } finally {
+      submitBtn.disabled = false;
     }
   }
 
@@ -168,7 +339,11 @@
       card.innerHTML = `
         <div class="command-header">
           <code>${escapeHtml(item.cmd)}</code>
-          <button class="btn-action" onclick="copyCommand('${escapeAttribute(item.cmd)}', this)">Copy</button>
+          <div>
+            <button class="btn-action btn-copy" onclick="copyCommand('${escapeAttribute(item.cmd)}', this)">Copy</button>
+            <button class="btn-action" onclick="editCommand(${item.id})">Edit</button>
+            <button class="btn-action btn-danger" onclick="deleteCommand(${item.id})">Delete</button>
+          </div>
         </div>
         <div class="description">${escapeHtml(item.desc)}</div>
       `;
@@ -198,7 +373,71 @@
     });
   }
 
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const cmd = cmdInput.value.trim();
+    const desc = descInput.value.trim();
+    const editId = editIdInput.value;
+
+    if (!cmd || !desc) return;
+
+    let updatedList;
+    let commitMsg = "";
+
+    if (editId) {
+      updatedList = commands.map(item => item.id == editId ? { id: Number(editId), cmd, desc } : item);
+      commitMsg = `Updated command: ${cmd}`;
+    } else {
+      updatedList = [{ id: Date.now(), cmd, desc }, ...commands];
+      commitMsg = `Added command: ${cmd}`;
+    }
+
+    const success = await syncToGitHub(updatedList, commitMsg);
+    if (success) {
+      commands = updatedList;
+      resetForm();
+      renderCommands(searchInput.value);
+    }
+  });
+
+  function editCommand(id) {
+    const item = commands.find(c => c.id === id);
+    if (!item) return;
+
+    cmdInput.value = item.cmd;
+    descInput.value = item.desc;
+    editIdInput.value = item.id;
+
+    document.getElementById('form-title').textContent = 'Edit Command';
+    submitBtn.textContent = 'Update Command';
+    cancelBtn.style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function deleteCommand(id) {
+    const item = commands.find(c => c.id === id);
+    if (confirm(`Delete command: "${item.cmd}"?`)) {
+      const updatedList = commands.filter(c => c.id !== id);
+      const success = await syncToGitHub(updatedList, `Deleted command: ${item.cmd}`);
+      if (success) {
+        commands = updatedList;
+        renderCommands(searchInput.value);
+      }
+    }
+  }
+
+  function resetForm() {
+    cmdInput.value = '';
+    descInput.value = '';
+    editIdInput.value = '';
+    document.getElementById('form-title').textContent = 'Add New Command';
+    submitBtn.textContent = 'Save Command';
+    cancelBtn.style.display = 'none';
+  }
+
+  cancelBtn.addEventListener('click', resetForm);
   searchInput.addEventListener('input', (e) => renderCommands(e.target.value));
+
   fetchCommands();
 </script>
 
