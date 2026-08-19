@@ -19,7 +19,7 @@
 ## 🚀 Live Demo (A work in progress🚀❤️)
 
 Check out the live public cheatsheet:
-👉 **[poporobright.github.io/terminal-cheatsheet](https://www.google.com/search?q=https://poporobright.github.io/terminal-cheatsheet/)**
+👉 **[poporobright.github.io/terminal-cheatsheet](https://poporobright.github.io/terminal-cheatsheet/)**
 
 ---
 <div align="center">
