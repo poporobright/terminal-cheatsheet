@@ -1,10 +1,5 @@
 [
   {
-    "id": 1787200823772,
-    "cmd": "google.com",
-    "desc": "This should take you to www.google.com"
-  },
-  {
     "id": 1787180211295,
     "cmd": "ls",
     "desc": "This command lists the current directory content in its current location, unless a path is specified in the command."
