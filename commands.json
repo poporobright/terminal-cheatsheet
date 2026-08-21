@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787337137475,
+    "cmd": "mv",
+    "desc": "The mv command (short for \"move\") relocates files or folders from one place to another, or renames them in place.\n\nKey Uses:\n\n* Rename Files or Folders: Changes the name of a file or directory without changing its content or location.\n* Move Files or Folders: Shifts items into a different directory on your system.\n* Overwrite Files: Moves a file into a location where a file with the same name already exists (replacing it).\n\nExample:\n\nRename a file\n\nmv index.html home.html\n\nMove a file into a subfolder\n\nmv home.html src/\n\nRename and move a file at the same time\n\nmv home.html src/index.html"
+  },
+  {
     "id": 1787337086238,
     "cmd": "cat",
     "desc": "The cat Command\n\nThe cat command (short for \"concatenate\") reads one or more files and displays their full content directly in the terminal, or merges multiple files into a single file.\n\nKey Uses:\n\nView File Content: Quickly displays what is inside a file without opening an editor.\n\nCombine Files: Merges the contents of multiple files into a new file.\n\nCreate File with Multiple Lines: Writes multi-line content into a new file from the terminal.\n\nExample:\n\nView the contents of a file\ncat index.html\n\nCombine two files into a third file\ncat header.html body.html > fullpage.html"
