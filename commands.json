@@ -7,7 +7,7 @@
   {
     "id": 1787337086238,
     "cmd": "cat",
-    "desc": "The cat Command\n\nThe cat command (short for \"concatenate\") reads one or more files and displays their full content directly in the terminal, or merges multiple files into a single file.\n\nKey Uses:\n\nView File Content: Quickly displays what is inside a file without opening an editor.\n\nCombine Files: Merges the contents of multiple files into a new file.\n\nCreate File with Multiple Lines: Writes multi-line content into a new file from the terminal.\n\nExample:\n\nView the contents of a file\ncat index.html\n\nCombine two files into a third file\ncat header.html body.html > fullpage.html"
+    "desc": "The cat command (short for \"concatenate\") reads one or more files and displays their full content directly in the terminal, or merges multiple files into a single file.\n\nKey Uses:\n\nView File Content: Quickly displays what is inside a file without opening an editor.\n\nCombine Files: Merges the contents of multiple files into a new file.\n\nCreate File with Multiple Lines: Writes multi-line content into a new file from the terminal.\n\nExample:\n\nView the contents of a file\ncat index.html\n\nCombine two files into a third file\ncat header.html body.html > fullpage.html"
   },
   {
     "id": 1787337071719,
