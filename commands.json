@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787337086238,
+    "cmd": "cat",
+    "desc": "The cat Command\n\nThe cat command (short for \"concatenate\") reads one or more files and displays their full content directly in the terminal, or merges multiple files into a single file.\n\nKey Uses:\n\nView File Content: Quickly displays what is inside a file without opening an editor.\n\nCombine Files: Merges the contents of multiple files into a new file.\n\nCreate File with Multiple Lines: Writes multi-line content into a new file from the terminal.\n\nExample:\n\nView the contents of a file\ncat index.html\n\nCombine two files into a third file\ncat header.html body.html > fullpage.html"
+  },
+  {
     "id": 1787337071719,
     "cmd": "echo",
     "desc": "The echo command prints text to your terminal screen, or redirects that text to create or add content to files.\n\nKey Uses:\n\nPrint Text: Displays a message or variable value directly in the terminal window.\n\nCreate or Overwrite File (>): Writes text into a file, replacing any existing content.\n\nAppend to File (>>): Adds text to the end of an existing file without deleting current content.\n\nExample:\n\nCreate a file with initial content\necho \"Hello World\" > index.html\n\nAdd a new line to the bottom of an existing file\necho \"New paragraph\" >> index.html"
