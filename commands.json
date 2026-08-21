@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787337024322,
+    "cmd": "touch",
+    "desc": "The touch command creates new, empty files quickly or updates the modification timestamp on existing files without changing their content.\n\nKey Uses:\n\nCreate Empty Files: Generates a blank file of any extension (like .html, .txt, .js) if the file does not exist yet.\n\nUpdate Timestamps: Sets an existing file's \"last modified\" time to the current date and time.\n\nExample:\n\ntouch index.html\n\nYou can also create multiple files at once:\n\ntouch style.css app.js index.html"
+  },
+  {
     "id": 1787336819219,
     "cmd": "zip",
     "desc": "This command allows you to zip files of any kind. To use it, use this example:\n\nTo zip a text file use: zip dummy.zip dummy.txt \n\nPlease note that each file name is a just a reference on the order the file names must go in the terminal."
