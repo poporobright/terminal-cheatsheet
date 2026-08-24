@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787615445914,
+    "cmd": "mandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdfmandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdfmandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdf",
+    "desc": "mandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdfmandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdfmandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdf"
+  },
+  {
     "id": 1787607455884,
     "cmd": "mandoc -T pdf $(man -w [command]) > ~/pathofyourchoice/[manual_name].pdf",
     "desc": "This command lets you print a manual from the terminal and turn it into a PDF format. Read below on how it works:\n\nLocates the raw text: The inner part $(man -w [command]) acts like a GPS. It finds the hidden folder where the system stores the manual's raw text.\n\nFeeds the factory: The parent command mandoc grabs that raw text path immediately.\n\nFormats the layout: The tool -T pdf works like a printing press. It takes the messy raw code and instantly formats it with clean headers, margins, and page breaks.\n\nDelivers the physical file: The arrow > is a delivery chute. It shoots the finished, formatted document straight onto your Desktop as a real, permanent file.\n\nNote: You can freely choose the destination file path of where you want the file to end up, doesn't always have to be your Desktop folder."
