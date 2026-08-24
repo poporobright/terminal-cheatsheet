@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787605924102,
+    "cmd": "man [command-name] | col -b > [filename].txt",
+    "desc": "This script (with the right commands) allows you to export a command manual from the terminal and print it as a .txt file. This helps with reading the manual entirely without relying on the Mac terminal to review the entire manual.\n\nExample:\n\nuser@macbook-air ~ % man zsh | col -b > zsh-manual.txt\n\nThis will create a text file of the zsh's shell language for its manual so you can freely ready it at your own pace."
+  },
+  {
     "id": 1787605757587,
     "cmd": "open",
     "desc": "This command allows you to open a file using the default program the file type is set to open with by default.\n\nExample:\n\nuser@macbook-air ~ % open dummy.txt\n\nResult: The file will open with the TextEditor app if your .txt file is set to open with said app by default."
