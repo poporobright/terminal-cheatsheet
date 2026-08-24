@@ -51,7 +51,7 @@
   },
   {
     "id": 1787178318450,
-    "cmd": "rm -r",
+    "cmd": "rm -f",
     "desc": "The rm -f command forcefully and permanently deletes files without asking for confirmation or sending them to the Trash. The **`-f`** (force) flag bypasses read-only warnings and silences error messages if the targeted file does not exist."
   }
 ]
