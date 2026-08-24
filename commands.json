@@ -1,5 +1,10 @@
 [
   {
+    "id": 1787605757587,
+    "cmd": "open",
+    "desc": "This command allows you to open a file using the default program the file type is set to open with by default.\n\nExample:\n\nuser@macbook-air ~ % open dummy.txt\n\nResult: The file will open with the TextEditor app if your .txt file is set to open with said app by default."
+  },
+  {
     "id": 1787337232841,
     "cmd": "pwd",
     "desc": "Do you want to know where you currently are in the terminal?\n\nUse pwd\n\nExample:\n\npwd outputs /Users/yourusername \n\nThis says you currently are in your own user folder."
