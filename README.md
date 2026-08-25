@@ -66,14 +66,15 @@ Want your own cloud-synced cheatsheet? Fork or deploy this project in under 2 mi
 * Under **Build and Deployment**, set **Branch** to `main` and **Folder** to `/ (root)`.
 * Click **Save**.
 
-
-
 ### 2. Generate a Personal Access Token (For Editing)
 
-1. Go to **GitHub Settings** > **Developer Settings** > **Personal Access Tokens (classic)**.
-2. Generate a token with the **`repo`** scope checked.
-3. Open your live GitHub Pages site.
-4. Expand **⚙️ Sync Settings** at the bottom of the page, enter your GitHub Username, Repository Name, and Token, then click **Save Sync Settings**.
+1. Go to **GitHub Settings** > **Developer Settings** > **Personal Access Tokens (fine-grained)**.
+2. Click **Generate new token**, give it a name, and set an expiration date.
+3. Under **Repository access**, select **Only select repositories** and choose your cheatsheet repo.
+4. Under **Permissions** > **Repository permissions**, set **Contents** to **Read and write**. Metadata will auto-set to Read-only.
+5. Click **Generate token** and copy it immediately — GitHub only shows it once.
+6. Open your live GitHub Pages site, expand **⚙️ Sync Settings** at the bottom, enter your GitHub Username, Repository Name, and Token, then click **Save Sync Settings**.
+```
 
 ---
 
